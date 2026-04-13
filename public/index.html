@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<title>Gist PRO</title>
+<style>
+body {
+    font-family: Arial;
+    background: #0d1117;
+    color: white;
+    padding: 20px;
+}
+
+input, textarea, select {
+    width: 100%;
+    margin: 10px 0;
+    padding: 12px;
+    background: #161b22;
+    color: white;
+    border: none;
+    border-radius: 8px;
+}
+
+button {
+    padding: 10px 15px;
+    background: #238636;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.container {
+    max-width: 800px;
+    margin: auto;
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+
+<h1>🔥 Gist PRO</h1>
+
+<input id="title" placeholder="Tên file (vd: app.js)">
+
+<textarea id="code" rows="12" placeholder="Nhập code..."></textarea>
+
+<select id="visibility">
+    <option value="public">Public</option>
+    <option value="private">Private</option>
+</select>
+
+<button onclick="createGist()">Create Gist</button>
+
+</div>
+
+<script>
+async function createGist() {
+    const title = document.getElementById("title").value;
+    const code = document.getElementById("code").value;
+    const visibility = document.getElementById("visibility").value;
+
+    if (!title || !code) {
+        alert("Vui lòng nhập đầy đủ!");
+        return;
+    }
+
+    const res = await fetch("/api/gist", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ title, code, visibility })
+    });
+
+    const data = await res.json();
+
+    if (data.url) {
+        alert("Link của bạn:\n" + window.location.origin + data.url);
+        window.location.href = data.url;
+    }
+}
+</script>
+
+</body>
+</html>
