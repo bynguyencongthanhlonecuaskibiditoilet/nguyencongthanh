@@ -1,0 +1,46 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Gist PRO</title>
+<style>
+body { font-family: Arial; background:#0d1117; color:white; padding:20px; }
+input, textarea, select { width:100%; margin:10px 0; padding:10px; background:#161b22; color:white; border:none; }
+button { padding:10px; background:#238636; color:white; border:none; }
+</style>
+</head>
+<body>
+
+<h2>Gist PRO</h2>
+
+<input id="title" placeholder="Title">
+<textarea id="code" rows="10" placeholder="Code..."></textarea>
+
+<select id="visibility">
+<option value="public">Public</option>
+<option value="private">Private</option>
+</select>
+
+<button onclick="create()">Create</button>
+
+<script>
+async function create() {
+    const res = await fetch("/api/gist", {
+        method:"POST",
+        headers:{ "Content-Type":"application/json" },
+        body: JSON.stringify({
+            title: title.value,
+            code: code.value,
+            visibility: visibility.value
+        })
+    });
+
+    const data = await res.json();
+    alert(window.location.origin + data.url);
+    location.href = data.url;
+}
+</script>
+
+</body>
+</html>
